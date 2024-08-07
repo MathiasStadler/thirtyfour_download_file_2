@@ -144,7 +144,7 @@ async fn download_file() -> Result<(), Box<dyn Error>> {
         }
     };
 
-    let _ = wait_seconds_of_browser(_ref_driver, 360).await;
+    let _ = wait_seconds_of_browser(_ref_driver, 20).await;
 
 
     debug!("execute_command  _cmd => _close ");
