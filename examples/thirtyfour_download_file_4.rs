@@ -33,7 +33,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     env_logger::builder()
         .format(|buf, record| {
             let warn_style = buf.default_level_style(log::Level::Warn);
-            let _timestamp = buf.timestamp();
+           // let _ti#[warn(dead_code)]mestamp = buf.timestamp();
             writeln!(
                 buf,
                 // FROM HERE
@@ -102,12 +102,15 @@ async fn download_file() -> Result<(), Box<dyn Error>> {
         }
         Err(_e) => {
             error!(r#"ACTION_BROWSER_CLOSE => Err {_e}"#);
+            return Err(Box::new(MyError("Error _execute_command => {_e}".to_string())).into())
         }
     };
     debug!("execute_command  _cmd => _open ");
     //wait
     // debug!("wait 10 sec");
     // let _ = wait_seconds_of_browser(3);
+
+    let _ = wait_seconds_of_browser(_ref_driver,5).await; 
 
     debug!("execute_command  _cmd => _close ");
     let _execute_command_result = execute_command(&_ref_driver,&_close).await;
@@ -135,7 +138,7 @@ async fn execute_command(_ref_driver:&WebDriver,cmd: &String) -> Result<(), Box<
 
     // } else
     if cmd == "close" {
-        debug!("wait 3 sec");
+        // debug!("wait 3 sec");
         // let _ = wait_seconds_of_browser(_driver.clone(), 3);
 
         debug!("execute_command  _cmd => {}", cmd);
@@ -197,7 +200,7 @@ async fn init_driver() -> Result<WebDriver, WebDriverError> {
 // }
 
 async fn wait_seconds_of_browser(
-    _driver: WebDriver,
+    _driver: &mut WebDriver,
     waiting_period: u64,
 ) -> Result<(), Box<dyn Error>> {
     debug!("wait for page completed load => wait for status from chrome driver");
