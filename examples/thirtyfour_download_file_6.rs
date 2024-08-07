@@ -20,7 +20,7 @@ use thirtyfour::{prelude::WebDriverError, By, DesiredCapabilities, Key, WebDrive
 //use FINISHED
 
 //const START
-const WEB_PAGE: &str = "https://www.macrotrends.net";
+const WEB_PAGE: &str = "https://stooq.com/q/d/l/?s=TREX.US&i=d&d1=20240801&d2=20241231";
 //const FINISHED
 
 #[allow(dead_code)]
@@ -144,7 +144,7 @@ async fn download_file() -> Result<(), Box<dyn Error>> {
         }
     };
 
-    let _ = wait_seconds_of_browser(_ref_driver, 20).await;
+    let _ = wait_seconds_of_browser(_ref_driver, 360).await;
 
 
     debug!("execute_command  _cmd => _close ");
@@ -161,13 +161,9 @@ async fn download_file() -> Result<(), Box<dyn Error>> {
 }
 
 async fn execute_command(_ref_driver: &WebDriver, cmd: &String) -> Result<(), Box<dyn Error>> {
-    info!("start => execute_command -> {}", cmd);
-
-    debug!("execute_command  _cmd => {}", cmd);
-
-    // let _driver = init_driver().await?;
-
-    // } else
+    
+    info!("execute_command start /w _cmd => {}", cmd);
+    debug!("execute_command start /w _cmd => {}", cmd);
 
     if cmd == "goto" {
         // debug!("wait 3 sec");
@@ -206,7 +202,11 @@ async fn execute_command(_ref_driver: &WebDriver, cmd: &String) -> Result<(), Bo
     } else {
         info!("Opps!!! Command NOT FOUND {}", cmd);
     }
-    debug!("finished => execute_command -> {}", cmd);
+    
+    // can remove
+    //debug!("finished => execute_command -> {}", cmd);
+    info!("execute_command finished /w _cmd => {}", cmd);
+    debug!("execute_command finished /w _cmd => {}", cmd);
 
     Ok(())
 }
