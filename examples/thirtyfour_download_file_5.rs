@@ -33,7 +33,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     env_logger::builder()
         .format(|buf, record| {
             let warn_style = buf.default_level_style(log::Level::Warn);
-           // let _ti#[warn(dead_code)]mestamp = buf.timestamp();
+            // let _ti#[warn(dead_code)]mestamp = buf.timestamp();
             writeln!(
                 buf,
                 // FROM HERE
@@ -80,9 +80,10 @@ async fn download_file() -> Result<(), Box<dyn Error>> {
     let _open: String = String::from("open");
     let _call: String = String::from("call");
     let _close: String = String::from("close");
+    let _goto = String::from("goto");
 
     debug!("execute_command  _cmd => _open ");
-    let _execute_command_result = execute_command(&_ref_driver,&_open).await;
+    let _execute_command_result = execute_command(&_ref_driver, &_open).await;
     debug!("execute_command finish _cmd => _open ");
 
     // let _ = match _execute_command_result {
@@ -102,7 +103,7 @@ async fn download_file() -> Result<(), Box<dyn Error>> {
         }
         Err(_e) => {
             error!(r#"ACTION_BROWSER_CLOSE => Err {_e}"#);
-            return Err(Box::new(MyError("Error _execute_command => {_e}".to_string())).into())
+            return Err(Box::new(MyError("Error _execute_command => {_e}".to_string())).into());
         }
     };
     debug!("execute_command  _cmd => _open ");
@@ -110,10 +111,33 @@ async fn download_file() -> Result<(), Box<dyn Error>> {
     // debug!("wait 10 sec");
     // let _ = wait_seconds_of_browser(3);
 
-    let _ = wait_seconds_of_browser(_ref_driver,20).await; 
+    debug!("execute_command  _cmd => _call ");
+    let _execute_command_result = execute_command(&_ref_driver, &_call).await;
+
+    let _ = match _execute_command_result {
+        //everything is fine
+        Ok(()) => (),
+        Err(_e) => {
+            return Err(Box::new(MyError("Error _execute_command => {_e}".to_string())).into())
+        }
+    };
+
+    let _ = wait_seconds_of_browser(_ref_driver, 20).await;
+
+    // _goto
+    debug!("execute_command  _cmd => _goto ");
+    let _execute_command_result = execute_command(&_ref_driver, &_goto).await;
+
+    let _ = match _execute_command_result {
+        //everything is fine
+        Ok(()) => (),
+        Err(_e) => {
+            return Err(Box::new(MyError("Error _execute_command => {_e}".to_string())).into())
+        }
+    };
 
     debug!("execute_command  _cmd => _close ");
-    let _execute_command_result = execute_command(&_ref_driver,&_close).await;
+    let _execute_command_result = execute_command(&_ref_driver, &_close).await;
 
     let _ = match _execute_command_result {
         //everything is fine
@@ -125,19 +149,32 @@ async fn download_file() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-
-
-
-async fn execute_command(_ref_driver:&WebDriver,cmd: &String) -> Result<(), Box<dyn Error>> {
+async fn execute_command(_ref_driver: &WebDriver, cmd: &String) -> Result<(), Box<dyn Error>> {
     info!("start => execute_command -> {}", cmd);
-    
+
     debug!("execute_command  _cmd => {}", cmd);
 
-
-   // let _driver = init_driver().await?;
+    // let _driver = init_driver().await?;
 
     // } else
-    if cmd == "close" {
+
+    if cmd == "goto" {
+        // debug!("wait 3 sec");
+        // let _ = wait_seconds_of_browser(_driver.clone(), 3);
+
+        debug!("execute_command  _cmd => {}", cmd);
+        let result_goto_browser = goto_browser(_ref_driver.clone()).await;
+        let _ = match result_goto_browser {
+            Ok(_web_element) => {
+                info!(r#"ACTION_BROWSER_GOTO => Ok"#);
+            }
+            Err(_e) => {
+                error!(r#"ACTION_BROWSER_GOTO => Err {_e}"#);
+            }
+        };
+
+        // let _result_init_driver = init_driver();
+    } else if cmd == "close" {
         // debug!("wait 3 sec");
         // let _ = wait_seconds_of_browser(_driver.clone(), 3);
 
@@ -162,6 +199,15 @@ async fn execute_command(_ref_driver:&WebDriver,cmd: &String) -> Result<(), Box<
 
     Ok(())
 }
+
+//goto_browser
+async fn goto_browser(_driver: WebDriver) -> Result<(), Box<dyn Error>> {
+    _driver.goto(WEB_PAGE).await?;
+
+    Ok(())
+}
+
+
 
 async fn close_browser(_driver: WebDriver) -> Result<(), Box<dyn Error>> {
     // Always explicitly close the browser.
@@ -209,6 +255,5 @@ async fn wait_seconds_of_browser(
     thread::sleep(Duration::from_secs(waiting_period));
     Ok(())
 }
-
 
 //  ps -ef |grep defunct| awk '{print $2}'| xargs kill -9 {}
