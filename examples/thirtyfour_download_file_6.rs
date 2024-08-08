@@ -20,7 +20,8 @@ use thirtyfour::{prelude::WebDriverError, By, DesiredCapabilities, Key, WebDrive
 //use FINISHED
 
 //const START
-const WEB_PAGE: &str = "https://stooq.com/q/d/l/?s=TREX.US&i=d&d1=20240801&d2=20241231";
+// const WEB_PAGE: &str = "https://stooq.com/q/d/l/?s=TREX.US&i=d&d1=20240801&d2=20241231";
+const WEB_PAGE:&str = "https://stooq.com/q/d/l/?s=TREX.US&i=d&d1=19900101&d2=20241231";
 //const FINISHED
 
 #[allow(dead_code)]
