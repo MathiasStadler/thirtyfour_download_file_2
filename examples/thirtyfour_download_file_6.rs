@@ -59,7 +59,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         .init();
 
     error!("RUST_LOG maybe NOT enable");
-    error!("Used: => RUST_LOG=info < prg >");
+    error!("Used: => RUST_LOG=debug < prg >");
 
     let rt: tokio::runtime::Runtime = tokio::runtime::Builder::new_current_thread()
         .enable_all()
