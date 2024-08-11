@@ -1,4 +1,3 @@
-
 // use START
 use std::error::Error;
 use std::fmt;
@@ -21,7 +20,7 @@ use thirtyfour::{prelude::WebDriverError, By, DesiredCapabilities, Key, WebDrive
 
 //const START
 // const WEB_PAGE: &str = "https://stooq.com/q/d/l/?s=TREX.US&i=d&d1=20240801&d2=20241231";
-const WEB_PAGE:&str = "https://stooq.com/q/d/l/?s=TREX.US&i=d&d1=19900101&d2=20241231";
+const WEB_PAGE: &str = "https://stooq.com/q/d/l/?s=TREX.US&i=d&d1=19900101&d2=20241231";
 //const FINISHED
 
 #[allow(dead_code)]
@@ -147,7 +146,6 @@ async fn download_file() -> Result<(), Box<dyn Error>> {
 
     let _ = wait_seconds_of_browser(_ref_driver, 50).await;
 
-
     debug!("execute_command  _cmd => _close ");
     let _execute_command_result = execute_command(&_ref_driver, &_close).await;
 
@@ -162,7 +160,6 @@ async fn download_file() -> Result<(), Box<dyn Error>> {
 }
 
 async fn execute_command(_ref_driver: &WebDriver, cmd: &String) -> Result<(), Box<dyn Error>> {
-    
     info!("execute_command start /w _cmd => {}", cmd);
     debug!("execute_command start /w _cmd => {}", cmd);
 
@@ -203,7 +200,7 @@ async fn execute_command(_ref_driver: &WebDriver, cmd: &String) -> Result<(), Bo
     } else {
         info!("Opps!!! Command NOT FOUND {}", cmd);
     }
-    
+
     // can remove
     //debug!("finished => execute_command -> {}", cmd);
     info!("execute_command finished /w _cmd => {}", cmd);
@@ -214,16 +211,22 @@ async fn execute_command(_ref_driver: &WebDriver, cmd: &String) -> Result<(), Bo
 
 //goto_browser
 async fn goto_browser(_driver: WebDriver) -> Result<(), Box<dyn Error>> {
+    info!("goto_browser start  ");
+    debug!("goto_browser start  ");
     _driver.goto(WEB_PAGE).await?;
-
+    info!("goto_browser finished");
+    debug!("goto_browser finished ");
     Ok(())
 }
 
-
-
 async fn close_browser(_driver: WebDriver) -> Result<(), Box<dyn Error>> {
     // Always explicitly close the browser.
+    // _driver.quit().await?;
+    info!("close_browser start ");
+    debug!("close_browser start ");
     _driver.quit().await?;
+    info!("close_browser finished");
+    debug!("close_browser finished");
 
     Ok(())
 }
